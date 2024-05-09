@@ -1,4 +1,8 @@
 <script lang="ts">
+import type { Ingrediente } from '@/interfaces/interfaces';
+import SelecionarIngredientes from './SelecionarIngredientes.vue';
+import Chips from './Chips.vue';
+
 export default {
     data() {
         return {
@@ -6,9 +10,10 @@ export default {
                 { id: 1, item: 'Alho' },
                 { id: 2, item: 'Manteiga' },
                 { id: 3, item: 'Oregano' },
-            ] as Array<{ id: number; item: string }>,
+            ] as Ingrediente[],
         };
     },
+    components: { SelecionarIngredientes, Chips },
 };
 </script>
 
@@ -17,8 +22,10 @@ export default {
         <section>
             <span class="subtitulo-lg sua-lista-texto">Sua lista:</span>
 
-            <ul v-if="ingredientes.length" class="ingredientes-sua-lista">
-                <li class="ingrediente" v-for="ingrediente in ingredientes" :key="ingrediente.id">{{ ingrediente.item }}</li>
+            <ul class="ingredientes-sua-lista" v-if="ingredientes.length">
+                <li v-for="ingrediente in ingredientes" :key="ingrediente.id">
+                    <Chips :texto="ingrediente.item" ativa />
+                </li>
             </ul>
 
             <p v-else class="paragrafo lista-vazia">
@@ -26,6 +33,8 @@ export default {
                 Sua lista está vazia, selecione ingredientes para iniciar.
             </p>
         </section>
+
+        <SelecionarIngredientes />
     </main>
 </template>
 
@@ -54,18 +63,6 @@ export default {
     justify-content: center;
     gap: 1rem 1.5rem;
     flex-wrap: wrap;
-}
-
-.ingrediente {
-    display: inline-block;
-    border-radius: 0.5rem;
-    min-width: 4.25rem;
-    padding: 0.5rem;
-    text-align: center;
-    transition: 0.2s;
-    color: var(--creme, #fffaf3);
-    background: var(--coral, #f0633c);
-    font-weight: 700;
 }
 
 .lista-vazia {
