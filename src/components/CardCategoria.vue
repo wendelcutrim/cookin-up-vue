@@ -1,14 +1,14 @@
 <script lang="ts">
 import type { Categoria } from '@/interfaces/interfaces';
 import type { PropType } from 'vue';
-import Chips from './Chips.vue';
+import IngredienteChip from './IngredienteChip.vue';
 
 export default {
     props: {
         categoria: { type: Object as PropType<Categoria>, required: true },
     },
 
-    components: { Chips },
+    components: { IngredienteChip },
 };
 </script>
 
@@ -21,7 +21,7 @@ export default {
 
         <ul class="categoria__ingredientes">
             <li v-for="ingrediente in categoria.ingredientes" :key="ingrediente">
-                <Chips :texto="ingrediente" />
+                <IngredienteChip :ingrediente="ingrediente" />
             </li>
         </ul>
     </article>
