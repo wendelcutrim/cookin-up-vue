@@ -1,19 +1,25 @@
 <script lang="ts">
-import type { Ingrediente } from '@/interfaces/interfaces';
 import SelecionarIngredientes from './SelecionarIngredientes.vue';
 import Chips from './Chips.vue';
 
 export default {
     data() {
         return {
-            ingredientes: [
-                { id: 1, item: 'Alho' },
-                { id: 2, item: 'Manteiga' },
-                { id: 3, item: 'Oregano' },
-            ] as Ingrediente[],
+            ingredientes: [] as string[],
         };
     },
     components: { SelecionarIngredientes, Chips },
+    methods: {
+        addMeusIngredientes(ingrediente: string) {
+            console.log('ConteudoPrincipal.addMeusIngredientes: ' + ingrediente);
+            this.ingredientes.push(ingrediente);
+        },
+
+        removerIngrediente(ingrediente: string) {
+            console.log('ConteudoPrincipal.removerIngrediente: ' + ingrediente);
+            this.ingredientes = this.ingredientes.filter((i) => i !== ingrediente);
+        },
+    },
 };
 </script>
 
@@ -22,9 +28,9 @@ export default {
         <section>
             <span class="subtitulo-lg sua-lista-texto">Sua lista:</span>
 
-            <ul class="ingredientes-sua-lista" v-if="ingredientes.length">
-                <li v-for="ingrediente in ingredientes" :key="ingrediente.id">
-                    <Chips :texto="ingrediente.item" ativa />
+            <ul class="ingredientes-sua-lista" v-if="ingredientes.length > 0">
+                <li v-for="ingrediente in ingredientes" :key="ingrediente">
+                    <Chips :texto="ingrediente" ativa />
                 </li>
             </ul>
 
@@ -34,7 +40,7 @@ export default {
             </p>
         </section>
 
-        <SelecionarIngredientes />
+        <SelecionarIngredientes @adicionar-ingrediente="addMeusIngredientes($event)" @remover-ingrediente="removerIngrediente($event)" />
     </main>
 </template>
 

@@ -9,6 +9,18 @@ export default {
     },
 
     components: { IngredienteChip },
+    methods: {
+        adicionarIngrediente(event: string): void {
+            console.log('CardaCategoria.handleSelecionado: ' + event);
+            this.$emit('adicionarIngrediente', event);
+        },
+
+        removerIngredienteLista(event: string) {
+            console.log('CardaCategoria.removerIngrediente: ' + event);
+            this.$emit('removerIngrediente', event);
+        },
+    },
+    emits: ['adicionarIngrediente', 'removerIngrediente'],
 };
 </script>
 
@@ -21,7 +33,11 @@ export default {
 
         <ul class="categoria__ingredientes">
             <li v-for="ingrediente in categoria.ingredientes" :key="ingrediente">
-                <IngredienteChip :ingrediente="ingrediente" />
+                <IngredienteChip
+                    :ingrediente="ingrediente"
+                    @adicionar-ingrediente="adicionarIngrediente($event)"
+                    @remover-ingrediente="removerIngredienteLista($event)"
+                />
             </li>
         </ul>
     </article>

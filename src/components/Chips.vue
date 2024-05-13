@@ -4,6 +4,10 @@ export default {
         texto: { type: String, required: true },
         ativa: { type: Boolean },
     },
+
+    created() {
+        console.log('Chips.created ativa: ' + this.ativa);
+    },
 };
 </script>
 

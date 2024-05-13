@@ -8,19 +8,29 @@ export default {
     },
     data() {
         return {
-            selecionado: false as boolean,
+            selecionado: false,
         };
     },
     methods: {
-        toogleSelecionado(): void {
+        handleSelecionado(): void {
             this.selecionado = !this.selecionado;
+
+            if (this.selecionado) {
+                this.$emit('adicionarIngrediente', this.ingrediente);
+            } else {
+                this.$emit('removerIngrediente', this.ingrediente);
+            }
         },
+    },
+    emits: ['adicionarIngrediente', 'removerIngrediente'],
+    updated() {
+        console.log('IngredienteChip.updated selecionado: ' + this.selecionado);
     },
 };
 </script>
 
 <template>
-    <button @click="toogleSelecionado()" :aria-pressed="selecionado">
+    <button @click="handleSelecionado()" :aria-pressed="selecionado">
         <Chips :texto="ingrediente" :ativa="selecionado" />
     </button>
 </template>
