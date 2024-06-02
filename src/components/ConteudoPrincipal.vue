@@ -1,14 +1,19 @@
 <script lang="ts">
 import SelecionarIngredientes from './SelecionarIngredientes.vue';
 import Chips from './Chips.vue';
+import MostrarReceitas from './MostrarReceitas.vue';
+import type { Conteudo } from '@/interfaces/types';
+import LoadingSpinner from './LoadingSpinner.vue';
 
 export default {
     data() {
         return {
             ingredientes: [] as string[],
+            conteudo: null as Conteudo,
+            showLoading: true as boolean,
         };
     },
-    components: { SelecionarIngredientes, Chips },
+    components: { SelecionarIngredientes, Chips, MostrarReceitas, LoadingSpinner },
     methods: {
         addMeusIngredientes(ingrediente: string) {
             console.log('ConteudoPrincipal.addMeusIngredientes: ' + ingrediente);
@@ -19,6 +24,20 @@ export default {
             console.log('ConteudoPrincipal.removerIngrediente: ' + ingrediente);
             this.ingredientes = this.ingredientes.filter((i) => i !== ingrediente);
         },
+
+        navegar(pagina: Conteudo) {
+            this.conteudo = pagina;
+            window.scrollTo(0, 0);
+        },
+    },
+    beforeCreate() {
+        setTimeout(() => {
+            this.conteudo = 'SelecionarIngredientes';
+        }, 3000);
+    },
+
+    mounted() {
+        this.showLoading = false;
     },
 };
 </script>
@@ -40,7 +59,15 @@ export default {
             </p>
         </section>
 
-        <SelecionarIngredientes @adicionar-ingrediente="addMeusIngredientes($event)" @remover-ingrediente="removerIngrediente($event)" />
+        <SelecionarIngredientes
+            v-if="conteudo === 'SelecionarIngredientes'"
+            @adicionar-ingrediente="addMeusIngredientes($event)"
+            @remover-ingrediente="removerIngrediente($event)"
+            @buscar-receitas="navegar('MostrarReceitas')"
+        />
+        <MostrarReceitas v-if="conteudo === 'MostrarReceitas'" @editar-receitas="navegar('SelecionarIngredientes')" />
+
+        <LoadingSpinner v-if="conteudo === null" :showLoading="showLoading" />
     </main>
 </template>
 
