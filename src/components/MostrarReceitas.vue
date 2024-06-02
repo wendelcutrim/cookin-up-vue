@@ -3,8 +3,13 @@ import { getReceitas } from '@/http';
 import type IReceita from '@/interfaces/interfaces';
 import CardReceita from './CardReceita.vue';
 import BotaoPrincipal from './BotaoPrincipal.vue';
+import type { PropType } from 'vue';
+import { itensDeLista1EstaoEmLista2 } from '@/utils/listas';
 
 export default {
+    props: {
+        ingredientes: { type: Array as PropType<string[]>, required: true },
+    },
     data() {
         return {
             receitas: [] as IReceita[],
@@ -20,7 +25,11 @@ export default {
     methods: {
         async fetchReceitas(): Promise<void> {
             const receitasResponse = await getReceitas();
-            this.receitas = receitasResponse.slice(0, 8);
+            this.receitas = receitasResponse.filter((receita) => {
+                const possoFazerReceita = itensDeLista1EstaoEmLista2(receita.ingredientes, this.ingredientes);
+                console.log('possoFazerReceita: ' + possoFazerReceita);
+                return possoFazerReceita;
+            });
         },
     },
     emits: ['editarReceitas'],
@@ -46,7 +55,7 @@ export default {
         <div v-else class="receitas-nao-encontradas">
             <p class="paragrafo-lg receitas-nao-encontradas__info">Ops, não encontramos resultados para sua combinação. Vamos tentar de novo?</p>
 
-            <img src="../assets/imagens/sem-receitas.png" alt="Desenho de um ovo quebrado. A gema tem um rosto com uma expressão triste." />
+            <img src="../assets/images/sem-receitas.png" aria-hidden="true" lt="Desenho de um ovo quebrado. A gema tem um rosto com uma expressão triste." />
         </div>
 
         <BotaoPrincipal texto="Editar lista" @click="$emit('editarReceitas')" />

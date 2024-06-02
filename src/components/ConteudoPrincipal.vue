@@ -68,7 +68,7 @@ export default {
             />
         </KeepAlive>
 
-        <MostrarReceitas v-if="conteudo === 'MostrarReceitas'" @editar-receitas="navegar('SelecionarIngredientes')" />
+        <MostrarReceitas v-if="conteudo === 'MostrarReceitas'" @editar-receitas="navegar('SelecionarIngredientes')" :ingredientes="ingredientes" />
 
         <LoadingSpinner v-if="conteudo === null" :showLoading="showLoading" />
     </main>
