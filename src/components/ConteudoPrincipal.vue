@@ -59,12 +59,15 @@ export default {
             </p>
         </section>
 
-        <SelecionarIngredientes
-            v-if="conteudo === 'SelecionarIngredientes'"
-            @adicionar-ingrediente="addMeusIngredientes($event)"
-            @remover-ingrediente="removerIngrediente($event)"
-            @buscar-receitas="navegar('MostrarReceitas')"
-        />
+        <KeepAlive include="SelecionarIngredientes">
+            <SelecionarIngredientes
+                v-if="conteudo === 'SelecionarIngredientes'"
+                @adicionar-ingrediente="addMeusIngredientes($event)"
+                @remover-ingrediente="removerIngrediente($event)"
+                @buscar-receitas="navegar('MostrarReceitas')"
+            />
+        </KeepAlive>
+
         <MostrarReceitas v-if="conteudo === 'MostrarReceitas'" @editar-receitas="navegar('SelecionarIngredientes')" />
 
         <LoadingSpinner v-if="conteudo === null" :showLoading="showLoading" />
